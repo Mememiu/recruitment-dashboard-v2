@@ -1,0 +1,304 @@
+/* 招聘看板 v2 设计系统（延续 v1 紫色系，转为浅色为主的现代风格） */
+
+:root {
+  --brand-50: #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
+  --grad-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --surface: #ffffff;
+  --surface-soft: #f4f5fb;
+  --text-main: #1f2430;
+  --text-muted: #6b7280;
+  --radius: 14px;
+  --shadow-card: 0 1px 3px rgba(31, 41, 55, 0.06), 0 8px 24px rgba(99, 102, 241, 0.07);
+  --mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body {
+  background: var(--surface-soft);
+  color: var(--text-main);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+}
+
+/* ---- 通用组件 ---- */
+
+.card-soft {
+  background: var(--surface);
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.brand-text {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-brand {
+  background: var(--grad-brand);
+  border: none;
+  color: #fff;
+}
+.btn-brand:hover {
+  color: #fff;
+  filter: brightness(1.06);
+}
+
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--grad-brand);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.mono-num {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ---- 应用外壳 ---- */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid rgba(99, 102, 241, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  margin-bottom: 2px;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar-link:hover {
+  background: var(--brand-50);
+  color: var(--brand-600);
+}
+.sidebar-link.router-link-active {
+  background: var(--grad-brand);
+  color: #fff;
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(99, 102, 241, 0.08);
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  height: 54px;
+  background: var(--surface);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* ---- 模块页通用 ---- */
+
+.module-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+  margin-bottom: 1rem;
+}
+.module-tab {
+  border: none;
+  background: none;
+  padding: 0.55rem 1rem;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.module-tab.active {
+  color: var(--brand-600);
+  font-weight: 600;
+  border-bottom-color: var(--brand-600);
+}
+
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.evidence-card {
+  border: 1px dashed rgba(99, 102, 241, 0.25);
+  border-radius: 10px;
+  padding: 0.85rem;
+  background: #fafaff;
+}
+
+.kpi-tile {
+  padding: 1rem 1.15rem;
+}
+.kpi-tile .kpi-value {
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.kpi-tile .kpi-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.doc-card {
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.doc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.14);
+}
+
+/* ---- 登录页 ---- */
+
+.login-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
+    radial-gradient(1000px 500px at 110% 10%, rgba(99, 102, 241, 0.14), transparent 55%),
+    var(--surface-soft);
+}
+
+.login-card {
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  padding: 2.25rem;
+}
+
+/* ---- 看板页 ---- */
+
+.stat-card {
+  padding: 1.1rem 1.25rem;
+}
+.stat-card .stat-label {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+.stat-card .stat-value {
+  font-family: var(--mono);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ---- 表格 ---- */
+
+.table-soft {
+  margin-bottom: 0;
+}
+.table-soft thead th {
+  background: #f8f9ff;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: none;
+  border-bottom-width: 1px;
+  white-space: nowrap;
+}
+.table-soft tbody td {
+  vertical-align: middle;
+}
+
+.badge-stage {
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 0.4em 0.75em;
+}
+
+/* ---- 弹层 ---- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 20, 32, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3.5rem 1rem;
+  z-index: 1050;
+  overflow-y: auto;
+}
+
+.modal-panel {
+  width: 640px;
+  max-width: 100%;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 64px rgba(17, 20, 32, 0.22);
+}
+
+.eval-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #eceefb;
+  overflow: hidden;
+}
+.eval-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--grad-brand);
+}
